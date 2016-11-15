@@ -6,7 +6,7 @@ using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 
-namespace Backup_WPF
+namespace Backup
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml

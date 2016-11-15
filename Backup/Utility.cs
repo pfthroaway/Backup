@@ -2,7 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Backup_WPF
+namespace Backup
 {
     internal static class Utility
     {

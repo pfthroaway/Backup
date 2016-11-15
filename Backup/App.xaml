@@ -1,7 +1,7 @@
-﻿<Application x:Class="Backup_WPF.App"
+﻿<Application x:Class="Backup.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:Backup_WPF"
+             xmlns:local="clr-namespace:Backup"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
          
