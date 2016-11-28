@@ -152,6 +152,7 @@ namespace Backup
             btnRefresh.IsEnabled = true;
             cmbSource.IsEnabled = true;
             cmbDestination.IsEnabled = true;
+            DestinationDriveInfo = SetDriveInformationText(SelectedDestinationDrive);
             Status = "Backup Complete!";
         }
 
@@ -219,7 +220,8 @@ namespace Backup
         {
             if (cmbSource.SelectedIndex >= 0)
             {
-                SourceDriveInfo = SetDriveInformationText((DriveInfo)cmbSource.SelectedValue);
+                SelectedSourceDrive = (DriveInfo)cmbSource.SelectedValue;
+                SourceDriveInfo = SetDriveInformationText(SelectedSourceDrive);
                 if (cmbDestination.SelectedIndex >= 0)
                     btnBackup.IsEnabled = true;
                 else
@@ -235,7 +237,8 @@ namespace Backup
         {
             if (cmbDestination.SelectedIndex >= 0)
             {
-                DestinationDriveInfo = SetDriveInformationText((DriveInfo)cmbDestination.SelectedValue);
+                SelectedDestinationDrive = (DriveInfo)cmbDestination.SelectedValue;
+                DestinationDriveInfo = SetDriveInformationText(SelectedDestinationDrive);
                 if (cmbSource.SelectedIndex >= 0)
                     btnBackup.IsEnabled = true;
                 else

@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Backup"
         mc:Ignorable="d"
         Title="Backup" Icon="Backup.ico" ResizeMode="NoResize" SizeToContent="WidthAndHeight" WindowStartupLocation="CenterScreen" FontFamily="Segoe UI Semibold" FontSize="17">
-    <Grid>
+    <Grid Margin="10">
         <Grid.Resources>
         </Grid.Resources>
         <Grid.ColumnDefinitions>
@@ -21,9 +21,9 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <TextBlock Grid.Column="0" Grid.Row="0" Margin="10,10,10,0" Text="Source Drive:" TextAlignment="Center" />
-        <TextBlock Grid.Column="1" Grid.Row="0" Margin="10,10,10,0" Text="Destination Drive:" TextAlignment="Center" />
-        <ComboBox x:Name="cmbSource" Grid.Column="0" Grid.Row="1" Margin="10" SelectionChanged="cmbSource_SelectionChanged" ItemsSource="{Binding}">
+        <TextBlock Grid.Column="0" Grid.Row="0" Text="Source Drive:" TextAlignment="Center" Margin="0,0,10,5" />
+        <TextBlock Grid.Column="1" Grid.Row="0" Text="Destination Drive:" TextAlignment="Center" Margin="0,0,0,5" />
+        <ComboBox x:Name="cmbSource" Grid.Column="0" Grid.Row="1" SelectionChanged="cmbSource_SelectionChanged" ItemsSource="{Binding}" Margin="0,0,10,10">
             <ComboBox.ItemTemplate>
                 <DataTemplate>
                     <TextBlock>
@@ -34,7 +34,7 @@
                 </DataTemplate>
             </ComboBox.ItemTemplate>
         </ComboBox>
-        <ComboBox x:Name="cmbDestination" Grid.Column="1" Grid.Row="1" Margin="10" SelectionChanged="cmbDestination_SelectionChanged" ItemsSource="{Binding}">
+        <ComboBox x:Name="cmbDestination" Grid.Column="1" Grid.Row="1" SelectionChanged="cmbDestination_SelectionChanged" ItemsSource="{Binding}"  Margin="0,0,0,10">
             <ComboBox.ItemTemplate>
                 <DataTemplate>
                     <TextBlock>
@@ -45,12 +45,12 @@
                 </DataTemplate>
             </ComboBox.ItemTemplate>
         </ComboBox>
-        <TextBox x:Name="txtSource" Grid.Column="0" Grid.Row="2" IsReadOnly="True" Width="350" Height="200" TextWrapping="Wrap" Text="{Binding Path=SourceDriveInfo, Mode=TwoWay}" ScrollViewer.VerticalScrollBarVisibility="Visible" Margin="10,0,10,0" />
-        <TextBox x:Name="txtDestination" Grid.Column="1" Grid.Row="2" IsReadOnly="True" Width="350" Height="200" TextWrapping="Wrap" Text="{Binding Path=DestinationDriveInfo, Mode=TwoWay}" ScrollViewer.VerticalScrollBarVisibility="Visible" Margin="10,0,10,0" />
-        <TextBlock Grid.Column="0" Grid.Row="3" Margin="10" Text="Log Location:" TextAlignment="Right" VerticalAlignment="Center" />
-        <TextBox x:Name="txtLog" Grid.Column="1" Grid.Row="3" BorderBrush="Black" BorderThickness="1" Margin="10" Padding="3" Text="C:\copylog" />
-        <TextBlock x:Name="lblStatus" Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="2" Margin="10,0,10,0" TextAlignment="Center" Text="{Binding Path=Status, Mode=TwoWay}" />
-        <Button x:Name="btnBackup" Grid.Column="0" Grid.Row="5" Height="30" Width="120" Content="_Backup" Click="btnBackup_Click" Margin="10" HorizontalAlignment="Right" IsDefault="True" />
-        <Button x:Name="btnRefresh" Grid.Column="1" Grid.Row="5" Height="30" Width="120" Content="_Refresh" Click="btnRefresh_Click" Margin="10" HorizontalAlignment="Left" />
+        <TextBox x:Name="txtSource" Grid.Column="0" Grid.Row="2" IsReadOnly="True" Width="350" Height="200" TextWrapping="Wrap" Text="{Binding Path=SourceDriveInfo}" ScrollViewer.VerticalScrollBarVisibility="Visible" Margin="0,0,10,10" />
+        <TextBox x:Name="txtDestination" Grid.Column="1" Grid.Row="2" IsReadOnly="True" Width="350" Height="200" TextWrapping="Wrap" Text="{Binding Path=DestinationDriveInfo}" ScrollViewer.VerticalScrollBarVisibility="Visible" Margin="0,0,0,10" />
+        <TextBlock Grid.Column="0" Grid.Row="3" Text="Log Location:" TextAlignment="Right" VerticalAlignment="Center" Margin="0,0,10,10" />
+        <TextBox x:Name="txtLog" Grid.Column="1" Grid.Row="3" BorderBrush="Black" BorderThickness="1" Padding="3" Text="C:\copylog" Margin="0,0,0,10" />
+        <TextBlock x:Name="lblStatus" Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="2" TextAlignment="Center" Text="{Binding Path=Status}"  Margin="0,0,0,10" />
+        <Button x:Name="btnBackup" Grid.Column="0" Grid.Row="5" Height="30" Width="120" Content="_Backup" Click="btnBackup_Click" HorizontalAlignment="Right" IsDefault="True" Margin="0,0,10,0" />
+        <Button x:Name="btnRefresh" Grid.Column="1" Grid.Row="5" Height="30" Width="120" Content="_Refresh" Click="btnRefresh_Click" HorizontalAlignment="Left" Margin="10,0,0,0" />
     </Grid>
 </Window>
