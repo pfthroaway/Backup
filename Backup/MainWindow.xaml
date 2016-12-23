@@ -3,54 +3,130 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Backup"
         mc:Ignorable="d"
         Title="Backup" Icon="Backup.ico" ResizeMode="NoResize" SizeToContent="WidthAndHeight" WindowStartupLocation="CenterScreen" FontFamily="Segoe UI Semibold" FontSize="17">
-    <Grid Margin="10">
-        <Grid.Resources>
-        </Grid.Resources>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto" />
-            <ColumnDefinition Width="Auto" />
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-        </Grid.RowDefinitions>
-        <TextBlock Grid.Column="0" Grid.Row="0" Text="Source Drive:" TextAlignment="Center" Margin="0,0,10,5" />
-        <TextBlock Grid.Column="1" Grid.Row="0" Text="Destination Drive:" TextAlignment="Center" Margin="0,0,0,5" />
-        <ComboBox x:Name="cmbSource" Grid.Column="0" Grid.Row="1" SelectionChanged="cmbSource_SelectionChanged" ItemsSource="{Binding}" Margin="0,0,10,10">
-            <ComboBox.ItemTemplate>
-                <DataTemplate>
-                    <TextBlock>
+    <TabControl Margin="10">
+        <TabItem Header="Backup" Padding="10,5">
+            <Grid Height="381" Width="710">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Column="0" Grid.Row="0" Text="Source Drive:" TextAlignment="Center" Margin="10,0,10,5" />
+                <TextBlock Grid.Column="1" Grid.Row="0" Text="Destination Drive:" TextAlignment="Center" Margin="0,0,10,5" />
+                <ComboBox x:Name="cmbSource" Grid.Column="0" Grid.Row="1" SelectionChanged="cmbSource_SelectionChanged" ItemsSource="{Binding}" Margin="10,0,10,10">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock>
                         <Run Text="{Binding Path=Name,Mode=OneWay}" />
                         <Run Text=" - " />
                         <Run Text="{Binding Path=VolumeLabel,Mode=OneWay}" />
-                    </TextBlock>
-                </DataTemplate>
-            </ComboBox.ItemTemplate>
-        </ComboBox>
-        <ComboBox x:Name="cmbDestination" Grid.Column="1" Grid.Row="1" SelectionChanged="cmbDestination_SelectionChanged" ItemsSource="{Binding}"  Margin="0,0,0,10">
-            <ComboBox.ItemTemplate>
-                <DataTemplate>
-                    <TextBlock>
+                            </TextBlock>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+                <ComboBox x:Name="cmbDestination" Grid.Column="1" Grid.Row="1" SelectionChanged="cmbDestination_SelectionChanged" ItemsSource="{Binding}"  Margin="0,0,10,10">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock>
                         <Run Text="{Binding Path=Name,Mode=OneWay}" />
                         <Run Text=" - " />
                         <Run Text="{Binding Path=VolumeLabel,Mode=OneWay}" />
-                    </TextBlock>
-                </DataTemplate>
-            </ComboBox.ItemTemplate>
-        </ComboBox>
-        <TextBox x:Name="txtSource" Grid.Column="0" Grid.Row="2" IsReadOnly="True" Width="350" Height="200" TextWrapping="Wrap" Text="{Binding Path=SourceDriveInfo}" ScrollViewer.VerticalScrollBarVisibility="Visible" Margin="0,0,10,10" />
-        <TextBox x:Name="txtDestination" Grid.Column="1" Grid.Row="2" IsReadOnly="True" Width="350" Height="200" TextWrapping="Wrap" Text="{Binding Path=DestinationDriveInfo}" ScrollViewer.VerticalScrollBarVisibility="Visible" Margin="0,0,0,10" />
-        <TextBlock Grid.Column="0" Grid.Row="3" Text="Log Location:" TextAlignment="Right" VerticalAlignment="Center" Margin="0,0,10,10" />
-        <TextBox x:Name="txtLog" Grid.Column="1" Grid.Row="3" BorderBrush="Black" BorderThickness="1" Padding="3" Text="C:\copylog" Margin="0,0,0,10" />
-        <TextBlock x:Name="lblStatus" Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="2" TextAlignment="Center" Text="{Binding Path=Status}"  Margin="0,0,0,10" />
-        <Button x:Name="btnBackup" Grid.Column="0" Grid.Row="5" Height="30" Width="120" Content="_Backup" Click="btnBackup_Click" HorizontalAlignment="Right" IsDefault="True" Margin="0,0,10,0" />
-        <Button x:Name="btnRefresh" Grid.Column="1" Grid.Row="5" Height="30" Width="120" Content="_Refresh" Click="btnRefresh_Click" HorizontalAlignment="Left" Margin="10,0,0,0" />
-    </Grid>
+                            </TextBlock>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+                <TextBox x:Name="txtSource" Grid.Column="0" Grid.Row="2" IsReadOnly="True" Width="340" Height="200" TextWrapping="Wrap" Text="{Binding Path=SourceDriveInfo}" ScrollViewer.VerticalScrollBarVisibility="Visible" Margin="10,0,10,10" />
+                <TextBox x:Name="txtDestination" Grid.Column="1" Grid.Row="2" IsReadOnly="True" Width="340" Height="200" TextWrapping="Wrap" Text="{Binding Path=DestinationDriveInfo}" ScrollViewer.VerticalScrollBarVisibility="Visible" Margin="0,0,10,10" />
+                <Button x:Name="btnBackup" Grid.Column="0" Grid.Row="3" Height="30" Width="120" Content="_Backup" Click="btnBackup_Click" HorizontalAlignment="Right" IsDefault="True" ToolTip="Backs up a hard drive." ToolTipService.ShowDuration="5000" Margin="0,0,10,10" />
+                <Button x:Name="btnRefresh" Grid.Column="1" Grid.Row="3" Height="30" Width="120" Content="_Refresh" Click="btnRefresh_Click" HorizontalAlignment="Left" ToolTip="Refreshes the list of connected drives." ToolTipService.ShowDuration="5000" Margin="0,0,0,10" />
+                <TextBlock x:Name="lblStatus" Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="2" TextAlignment="Center" Text="{Binding Path=Status}" />
+            </Grid>
+        </TabItem>
+        <TabItem Header="Advanced" Padding="10,5">
+            <Grid Height="381" Width="710">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <GroupBox Grid.Column="0" Grid.Row="0" Header="Copy Options" Margin="10,0,10,10">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <CheckBox x:Name="chkMirror" Grid.Column="0" Grid.Row="0" Content="/MIR" IsChecked="True" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" ToolTip="Mirror drive" ToolTipService.ShowDuration="5000" Margin="0,0,10,10" />
+                        <CheckBox x:Name="chkPurge" Grid.Column="1" Grid.Row="0" Content="/PURGE" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" ToolTip="Deletes files/directories in the destination that no longer exist in the source." ToolTipService.ShowDuration="5000" Margin="0,0,0,10" />
+                        <CheckBox x:Name="chkCopyS" Grid.Column="0" Grid.Row="1" Content="/S" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" ToolTip="Copies subdirectories, excluding empty directories." ToolTipService.ShowDuration="5000" Margin="0,3,10,0" />
+                        <CheckBox x:Name="chkCopyE" Grid.Column="1" Grid.Row="1" Content="/E" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" ToolTip="Copies subdirectories, including empty directories." ToolTipService.ShowDuration="5000" Margin="0,3,0,0" />
+                    </Grid>
+                </GroupBox>
+                <GroupBox Grid.Column="1" Grid.Row="0" Header="Retry Options" Margin="0,0,10,10">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <CheckBox x:Name="chkRetryCount" Grid.Column="0" Grid.Row="0" Content="/R" IsChecked="True" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" ToolTip="Number of times to retry a failed file." ToolTipService.ShowDuration="5000" Margin="0,0,10,10" />
+                        <TextBox x:Name="txtRetryCount" Grid.Column="1" Grid.Row="0" Width="60" Text="3" TextAlignment="Center" GotFocus="textBox_GotFocus" MaxLength="3" Margin="0,0,0,10" PreviewKeyDown="txtRetry_PreviewKeyDown" />
+                        <CheckBox x:Name="chkRetryWait" Grid.Column="0" Grid.Row="1" Content="/W" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" ToolTip="Number of seconds to wait between retry attempts." ToolTipService.ShowDuration="5000" IsChecked="True" Margin="0,0,10,0" />
+                        <TextBox x:Name="txtRetryWait" Grid.Column="1" Grid.Row="1" Width="60" Text="1" TextAlignment="Center" GotFocus="textBox_GotFocus" MaxLength="3" PreviewKeyDown="txtRetry_PreviewKeyDown" />
+                    </Grid>
+                </GroupBox>
+                <GroupBox Grid.Column="2" Grid.Row="0" Header="Logging Options" Margin="0,0,0,10">
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,10,10" HorizontalAlignment="Center">
+                            <CheckBox x:Name="chkLog" Content="/LOG" IsChecked="True" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" ToolTip="Log the status of the copy operation." ToolTipService.ShowDuration="5000" Margin="0,0,10,0" />
+                            <CheckBox x:Name="chkLogPlus" Content="+" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" ToolTip="Append log to end of file." ToolTipService.ShowDuration="5000" />
+                        </StackPanel>
+                        <TextBox x:Name="txtLogLocation" Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" Width="300" Text="C:\copylog\log.txt" TextAlignment="Center" GotFocus="textBox_GotFocus" Margin="0,3,0,0" />
+                    </StackPanel>
+                </GroupBox>
+                <GroupBox Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" Header="Exclude Files" Margin="10,0,10,10">
+                    <StackPanel>
+                        <CheckBox x:Name="chkExcludeFiles" Content="/XF" IsChecked="True" HorizontalAlignment="Center" VerticalContentAlignment="Center" ToolTip="Exclude specified files from being copied." ToolTipService.ShowDuration="5000" Margin="0,0,10,10" />
+                        <TextBox x:Name="txtXF1" Width="283" Text="Icon.ico" TextAlignment="Center" GotFocus="textBox_GotFocus" Margin="0,0,0,5" />
+                        <TextBox x:Name="txtXF2" Width="283" TextAlignment="Center" GotFocus="textBox_GotFocus" Margin="0,0,0,5" />
+                        <TextBox x:Name="txtXF3" Width="283" TextAlignment="Center" GotFocus="textBox_GotFocus" Margin="0,0,0,5" />
+                        <TextBox x:Name="txtXF4" Width="283" TextAlignment="Center" GotFocus="textBox_GotFocus" Margin="0,0,0,5" />
+                        <TextBox x:Name="txtXF5" Width="283" TextAlignment="Center" GotFocus="textBox_GotFocus" />
+                    </StackPanel>
+                </GroupBox>
+                <GroupBox Grid.Column="2" Grid.Row="1" Header="Exclude Directories" Margin="0,0,0,10">
+                    <StackPanel>
+                        <CheckBox x:Name="chkExcludeDirectories" Content="/XD" IsChecked="True" HorizontalAlignment="Center" VerticalContentAlignment="Center" ToolTip="Exclude specified directories from being copied." ToolTipService.ShowDuration="5000" Margin="0,0,10,10" />
+                        <TextBox x:Name="txtXD1" Width="300" Text="System Volume Information" TextAlignment="Center" GotFocus="textBox_GotFocus" Margin="0,0,0,5" />
+                        <TextBox x:Name="txtXD2" Width="300" Text="$RECYCLE.BIN" TextAlignment="Center" GotFocus="textBox_GotFocus" Margin="0,0,0,5" />
+                        <TextBox x:Name="txtXD3" Width="300" Text="Boot" TextAlignment="Center" GotFocus="textBox_GotFocus" Margin="0,0,0,5" />
+                        <TextBox x:Name="txtXD4" Width="300" TextAlignment="Center" GotFocus="textBox_GotFocus" Margin="0,0,0,5" />
+                        <TextBox x:Name="txtXD5" Width="300" TextAlignment="Center" GotFocus="textBox_GotFocus" />
+                    </StackPanel>
+                </GroupBox>
+                <GroupBox Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="3" Header="Custom Command" Margin="10,0,0,0">
+                    <TextBox x:Name="txtCustomCommand" TextAlignment="Center" GotFocus="textBox_GotFocus" Width="606" />
+                </GroupBox>
+            </Grid>
+        </TabItem>
+    </TabControl>
 </Window>

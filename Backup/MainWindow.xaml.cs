@@ -3,18 +3,18 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace Backup
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
-    public partial class MainWindow : Window, INotifyPropertyChanged
+    /// <summary>Interaction logic for MainWindow.xaml</summary>
+    public partial class MainWindow : INotifyPropertyChanged
     {
-        private List<DriveInfo> driveList = new List<DriveInfo>();
-        private string nl = Environment.NewLine;
+        private readonly List<DriveInfo> _driveList = new List<DriveInfo>();
+        private readonly string _nl = Environment.NewLine;
         private DriveInfo _selectedSourceDrive;
         private DriveInfo _selectedDestinationDrive;
         private string _destinationDriveInfo = "";
@@ -23,30 +23,35 @@ namespace Backup
 
         #region Properties
 
+        /// <summary>The drive selected as the source drive.</summary>
         public DriveInfo SelectedSourceDrive
         {
             get { return _selectedSourceDrive; }
             set { _selectedSourceDrive = value; OnPropertyChanged("SelectedSourceDrive"); OnPropertyChanged("SourceDriveInfo"); }
         }
 
+        /// <summary>The drive selected as the destination drive.</summary>
         public DriveInfo SelectedDestinationDrive
         {
             get { return _selectedDestinationDrive; }
             set { _selectedDestinationDrive = value; OnPropertyChanged("SelectedDestinationDrive"); OnPropertyChanged("DestinationDriveInfo"); }
         }
 
+        /// <summary>The information about the drive selected as the destination drive.</summary>
         public string DestinationDriveInfo
         {
             get { return _destinationDriveInfo; }
             set { _destinationDriveInfo = value; OnPropertyChanged("DestinationDriveInfo"); }
         }
 
+        /// <summary>The information about the drive selected as the source drive.</summary>
         public string SourceDriveInfo
         {
             get { return _sourceDriveInfo; }
             set { _sourceDriveInfo = value; OnPropertyChanged("SourceDriveInfo"); }
         }
 
+        /// <summary>The status of the current backup operation.</summary>
         public string Status
         {
             get { return _status; }
@@ -67,17 +72,25 @@ namespace Backup
         #endregion Data-Binding
 
         /// <summary>
-        /// Load all drives connected to the computer which aren't a CD.
+        /// Turns several Keyboard.Keys into a list of Keys which can be tested using List.Any.
         /// </summary>
+        /// <param name="keys">Array of Keys</param>
+        /// <returns></returns>
+        private static IEnumerable<bool> GetListOfKeys(params Key[] keys)
+        {
+            return keys.Select(Keyboard.IsKeyDown).ToList();
+        }
+
+        /// <summary>Load all drives connected to the computer which aren't a CD.</summary>
         private void LoadDrives()
         {
-            driveList.Clear();
+            _driveList.Clear();
             try
             {
                 foreach (DriveInfo drive in DriveInfo.GetDrives())
                 {
                     if (drive.DriveType != DriveType.CDRom)
-                        driveList.Add(drive);
+                        _driveList.Add(drive);
                 }
             }
             catch (Exception ex)
@@ -85,53 +98,127 @@ namespace Backup
                 MessageBox.Show(ex.Message, "Backup", MessageBoxButton.OK);
             }
 
-            cmbSource.ItemsSource = driveList;
-            cmbDestination.ItemsSource = driveList;
+            cmbSource.ItemsSource = _driveList;
+            cmbDestination.ItemsSource = _driveList;
             cmbSource.Items.Refresh();
             cmbDestination.Items.Refresh();
             cmbSource.SelectedIndex = 0;
             cmbDestination.SelectedIndex = 0;
         }
 
+        /// <summary>Toggles several controls' IsEnabled Property.</summary>
+        /// <param name="toggle">Determines the IsEnabled Property of the controls</param>
+        private void ToggleControls(bool toggle)
+        {
+            btnBackup.IsEnabled = toggle;
+            btnRefresh.IsEnabled = toggle;
+            cmbSource.IsEnabled = toggle;
+            cmbDestination.IsEnabled = toggle;
+        }
+
+        /// <summary>Sets the text for the TextBox of a selected drive.</summary>
+        /// <param name="selectedDrive">Drive the user selected</param>
+        /// <returns>Information about the selected Drive</returns>
+        private string SetDriveInformationText(DriveInfo selectedDrive)
+        {
+            return "Drive Letter: " + selectedDrive.Name + _nl +
+                               "Drive Label: " + selectedDrive.VolumeLabel + _nl +
+                               "Drive Type: " + selectedDrive.DriveType + _nl +
+                               "Drive Format: " + selectedDrive.DriveFormat + _nl +
+                               "Total Capacity: " + $"{selectedDrive.TotalSize:0,0}" + _nl +
+                               "Total Free Space: " + $"{selectedDrive.TotalFreeSpace:0,0}" + _nl +
+                               "Available Free Space: " + $"{selectedDrive.AvailableFreeSpace:0,0}";
+        }
+
         #region Backup Methods
 
-        /// <summary>
-        /// Backup one hard drive to another.
-        /// </summary>
+        /// <summary>Backup one hard drive to another.</summary>
         private async void Backup()
         {
-            DriveInfo sourceDrive, destDrive;
-            sourceDrive = driveList[cmbSource.SelectedIndex];
-            destDrive = driveList[cmbDestination.SelectedIndex];
+            DriveInfo sourceDrive = _driveList[cmbSource.SelectedIndex];
+            DriveInfo destDrive = _driveList[cmbDestination.SelectedIndex];
 
-            string source, dest, log, whatToCopy, exclude_files, options, exclude_dir, robo;
-            source = sourceDrive.Name;
-            dest = destDrive.Name;
-            whatToCopy = "/MIR";
-            log = txtLog.Text + "\\copylog.txt";
-            options = "/R:1 /W:1 /LOG:" + log;
-            exclude_dir = "/XD " + source + "System Volume Information " + source + "$RECYCLE.BIN " + dest + "Save";
-            exclude_files = "/XF " + source + "Icon.ico";
-            robo = source + " " + dest + " " + whatToCopy + " " + options + " " + exclude_dir + " " + exclude_files;
+            string source = sourceDrive.Name;
+            string dest = destDrive.Name;
+            string whatToCopy = "";
+            if (chkMirror.IsChecked.Value)
+                whatToCopy += "/MIR";
+            if (chkPurge.IsChecked.Value)
+                whatToCopy += whatToCopy.Length > 0 ? " /PURGE" : "/PURGE";
+            if (chkCopyE.IsChecked.Value)
+                whatToCopy += whatToCopy.Length > 0 ? " /E" : "/E";
+            if (chkCopyS.IsChecked.Value)
+                whatToCopy += whatToCopy.Length > 0 ? " /S" : "/S";
 
-            if (!Directory.Exists(txtLog.Text))
-                Directory.CreateDirectory(txtLog.Text);
+            string log = "";
+            if (chkLog.IsChecked.Value)
+                log = chkLogPlus.IsChecked.Value ? "/LOG+:" + txtLogLocation.Text : "/LOG:" + txtLogLocation.Text;
+
+            string options = "";
+            if (chkRetryCount.IsChecked.Value)
+                options += "/R:" + txtRetryCount.Text;
+            if (chkRetryWait.IsChecked.Value)
+                options += " /W:" + txtRetryWait.Text;
+
+            if (txtCustomCommand.Text.Length > 0)
+                options += " " + txtCustomCommand.Text;
+
+            options += " " + log;
+
+            string exclude_dir = "";
+            if (chkExcludeDirectories.IsChecked.Value)
+            {
+                exclude_dir += "/XD";
+
+                if (txtXD1.Text.Length > 0)
+                    exclude_dir += " \"" + source + txtXD1.Text + "\"";
+                if (txtXD2.Text.Length > 0)
+                    exclude_dir += " \"" + source + txtXD2.Text + "\"";
+                if (txtXD3.Text.Length > 0)
+                    exclude_dir += " \"" + source + txtXD3.Text + "\"";
+                if (txtXD4.Text.Length > 0)
+                    exclude_dir += " \"" + source + txtXD4.Text + "\"";
+                if (txtXD5.Text.Length > 0)
+                    exclude_dir += " \"" + source + txtXD5.Text + "\"";
+            }
+            string exclude_files = "";
+            if (chkExcludeFiles.IsChecked.Value)
+            {
+                exclude_files += "/XF";
+
+                if (txtXF1.Text.Length > 0)
+                    exclude_files += " \"" + source + txtXF1.Text + "\"";
+                if (txtXF2.Text.Length > 0)
+                    exclude_files += " \"" + source + txtXF2.Text + "\"";
+                if (txtXF3.Text.Length > 0)
+                    exclude_files += " \"" + source + txtXF3.Text + "\"";
+                if (txtXF4.Text.Length > 0)
+                    exclude_files += " \"" + source + txtXF4.Text + "\"";
+                if (txtXF5.Text.Length > 0)
+                    exclude_files += " \"" + source + txtXF5.Text + "\"";
+            }
+
+            string robo = source + " " + dest + " " + whatToCopy + " " + options + " " + exclude_dir + " " + exclude_files;
+
+            if (!Directory.Exists(txtLogLocation.Text.Substring(0, txtLogLocation.Text.LastIndexOf("\\") + 1)))
+                Directory.CreateDirectory(txtLogLocation.Text.Substring(0, txtLogLocation.Text.LastIndexOf("\\") + 1));
 
             try
             {
                 Status = "Backing Up...";
-                btnBackup.IsEnabled = false;
-                btnRefresh.IsEnabled = false;
-                cmbSource.IsEnabled = false;
-                cmbDestination.IsEnabled = false;
-
-                Process proc = new Process();
-                proc.StartInfo.RedirectStandardOutput = true;
-                proc.StartInfo.FileName = "Robocopy.exe";
-                proc.StartInfo.Arguments = robo;
-                proc.StartInfo.UseShellExecute = false;
-                proc.StartInfo.CreateNoWindow = true;
-                proc.EnableRaisingEvents = true;
+                ToggleControls(false);
+                Process proc = new Process
+                {
+                    StartInfo =
+                    {
+                        RedirectStandardOutput = true,
+                        FileName = "Robocopy.exe",
+                        Arguments = robo,
+                        UseShellExecute = false,
+                        CreateNoWindow = true
+                    },
+                    EnableRaisingEvents = true
+                };
                 proc.Start();
                 await proc.WaitForExitAsync();
 
@@ -143,15 +230,10 @@ namespace Backup
             }
         }
 
-        /// <summary>
-        /// Re-enable buttons when backup is complete.
-        /// </summary>
+        /// <summary>Re-enable buttons when backup is complete.</summary>
         private void BackupComplete()
         {
-            btnBackup.IsEnabled = true;
-            btnRefresh.IsEnabled = true;
-            cmbSource.IsEnabled = true;
-            cmbDestination.IsEnabled = true;
+            ToggleControls(true);
             DestinationDriveInfo = SetDriveInformationText(SelectedDestinationDrive);
             Status = "Backup Complete!";
         }
@@ -162,18 +244,15 @@ namespace Backup
 
         private void btnBackup_Click(object sender, RoutedEventArgs e)
         {
-            DriveInfo sourceDrive, destDrive;
-            sourceDrive = driveList[cmbSource.SelectedIndex];
-            destDrive = driveList[cmbDestination.SelectedIndex];
+            DriveInfo sourceDrive = _driveList[cmbSource.SelectedIndex];
+            DriveInfo destDrive = _driveList[cmbDestination.SelectedIndex];
 
-            if (cmbDestination.SelectedIndex >= 0 && cmbSource.SelectedIndex >= 0 && txtLog.Text.Length > 0)
+            if (cmbDestination.SelectedIndex >= 0 && cmbSource.SelectedIndex >= 0)
             {
                 if (sourceDrive != destDrive)
                 {
                     if (sourceDrive.TotalSize - sourceDrive.TotalFreeSpace <= destDrive.TotalSize)
-                    {
                         Backup();
-                    }
                     else
                         MessageBox.Show("Destination drive is too small to backup this drive. Please select another.", "Backup", MessageBoxButton.OK);
                 }
@@ -191,22 +270,6 @@ namespace Backup
 
         #endregion Button Click Methods
 
-        /// <summary>
-        /// Sets the text for the TextBox of a selected drive.
-        /// </summary>
-        /// <param name="selectedDrive">Drive the user selected</param>
-        /// <returns>Information about the selected Drive</returns>
-        private string SetDriveInformationText(DriveInfo selectedDrive)
-        {
-            return "Drive Letter: " + selectedDrive.Name + nl +
-                               "Drive Label: " + selectedDrive.VolumeLabel + nl +
-                               "Drive Type: " + selectedDrive.DriveType + nl +
-                               "Drive Format: " + selectedDrive.DriveFormat + nl +
-                               "Total Capacity: " + string.Format("{0:0,0}", selectedDrive.TotalSize) + nl +
-                               "Total Free Space: " + string.Format("{0:0,0}", selectedDrive.TotalFreeSpace) + nl +
-                               "Available Free Space: " + string.Format("{0:0,0}", selectedDrive.AvailableFreeSpace);
-        }
-
         #region Window-Manipulation Methods
 
         public MainWindow()
@@ -222,10 +285,7 @@ namespace Backup
             {
                 SelectedSourceDrive = (DriveInfo)cmbSource.SelectedValue;
                 SourceDriveInfo = SetDriveInformationText(SelectedSourceDrive);
-                if (cmbDestination.SelectedIndex >= 0)
-                    btnBackup.IsEnabled = true;
-                else
-                    btnBackup.IsEnabled = false;
+                btnBackup.IsEnabled = cmbDestination.SelectedIndex >= 0;
             }
             else
                 SourceDriveInfo = "";
@@ -239,15 +299,29 @@ namespace Backup
             {
                 SelectedDestinationDrive = (DriveInfo)cmbDestination.SelectedValue;
                 DestinationDriveInfo = SetDriveInformationText(SelectedDestinationDrive);
-                if (cmbSource.SelectedIndex >= 0)
-                    btnBackup.IsEnabled = true;
-                else
-                    btnBackup.IsEnabled = false;
+                btnBackup.IsEnabled = cmbSource.SelectedIndex >= 0;
             }
             else
                 DestinationDriveInfo = "";
 
             Status = "";
+        }
+
+        private void txtRetry_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            Key k = e.Key;
+
+            IEnumerable<bool> keys = GetListOfKeys(Key.Back, Key.Delete, Key.Home, Key.End, Key.LeftShift, Key.RightShift,
+            Key.Enter, Key.Tab, Key.LeftAlt, Key.RightAlt, Key.Left, Key.Right, Key.LeftCtrl, Key.RightCtrl,
+            Key.Escape);
+
+            e.Handled = !keys.Any(key => key) && (Key.D0 > k || k > Key.D9) && (Key.NumPad0 > k || k > Key.NumPad9);
+        }
+
+        private void textBox_GotFocus(object sender, RoutedEventArgs e)
+        {
+            TextBox txtBox = (TextBox)sender;
+            txtBox.SelectAll();
         }
 
         #endregion Window-Manipulation Methods

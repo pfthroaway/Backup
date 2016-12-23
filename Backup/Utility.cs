@@ -8,7 +8,7 @@ namespace Backup
     {
         public static Task WaitForExitAsync(this Process process, CancellationToken cancellationToken = default(CancellationToken))
         {
-            var tcs = new TaskCompletionSource<object>();
+            TaskCompletionSource<object> tcs = new TaskCompletionSource<object>();
             process.EnableRaisingEvents = true;
             process.Exited += (sender, args) => tcs.TrySetResult(null);
             if (cancellationToken != default(CancellationToken))
