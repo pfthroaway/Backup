@@ -95,7 +95,7 @@ namespace Backup
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "Backup", MessageBoxButton.OK);
+                new Notification(ex.Message, "Backup", NotificationButtons.OK, this).ShowDialog();
             }
 
             cmbSource.ItemsSource = _driveList;
@@ -141,13 +141,13 @@ namespace Backup
             string source = sourceDrive.Name;
             string dest = destDrive.Name;
             string whatToCopy = "";
-            if (chkMirror.IsChecked.Value)
+            if (chkMirror.IsChecked != null && chkMirror.IsChecked.Value)
                 whatToCopy += "/MIR";
-            if (chkPurge.IsChecked.Value)
+            if (chkPurge.IsChecked != null && chkPurge.IsChecked.Value)
                 whatToCopy += whatToCopy.Length > 0 ? " /PURGE" : "/PURGE";
-            if (chkCopyE.IsChecked.Value)
+            if (chkCopyE.IsChecked != null && chkCopyE.IsChecked.Value)
                 whatToCopy += whatToCopy.Length > 0 ? " /E" : "/E";
-            if (chkCopyS.IsChecked.Value)
+            if (chkCopyS.IsChecked != null && chkCopyS.IsChecked.Value)
                 whatToCopy += whatToCopy.Length > 0 ? " /S" : "/S";
 
             string log = "";
@@ -226,7 +226,7 @@ namespace Backup
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "Backup", MessageBoxButton.OK);
+                new Notification(ex.Message, "Backup", NotificationButtons.OK, this).ShowDialog();
             }
         }
 
@@ -254,12 +254,12 @@ namespace Backup
                     if (sourceDrive.TotalSize - sourceDrive.TotalFreeSpace <= destDrive.TotalSize)
                         Backup();
                     else
-                        MessageBox.Show("Destination drive is too small to backup this drive. Please select another.", "Backup", MessageBoxButton.OK);
+                        new Notification("Destination drive is too small to backup this drive. Please select another.", "Backup", NotificationButtons.OK, this).ShowDialog();
                 }
                 else
-                    MessageBox.Show("Source drive and destination drive must be different.", "Backup", MessageBoxButton.OK);
+                    new Notification("Source drive and destination drive must be different.", "Backup", NotificationButtons.OK, this).ShowDialog();
             }
-            else { MessageBox.Show("Please select both a source and destination drive and type a valid log location.", "Backup", MessageBoxButton.OK); }
+            else { new Notification("Please select both a source and destination drive and type a valid log location.", "Backup", NotificationButtons.OK, this).ShowDialog(); }
         }
 
         private void btnRefresh_Click(object sender, RoutedEventArgs e)
