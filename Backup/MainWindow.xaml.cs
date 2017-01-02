@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Extensions;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -17,9 +18,7 @@ namespace Backup
         private readonly string _nl = Environment.NewLine;
         private DriveInfo _selectedSourceDrive;
         private DriveInfo _selectedDestinationDrive;
-        private string _destinationDriveInfo = "";
-        private string _sourceDriveInfo = "";
-        private string _status = "";
+        private string _destinationDriveInfo, _sourceDriveInfo, _status;
 
         #region Properties
 
