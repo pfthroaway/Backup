@@ -21,30 +21,30 @@
                 </Grid.RowDefinitions>
                 <TextBlock Grid.Column="0" Grid.Row="0" Text="Source Drive:" TextAlignment="Center" Margin="10,0,10,5" />
                 <TextBlock Grid.Column="1" Grid.Row="0" Text="Destination Drive:" TextAlignment="Center" Margin="0,0,10,5" />
-                <ComboBox x:Name="cmbSource" Grid.Column="0" Grid.Row="1" SelectionChanged="cmbSource_SelectionChanged" ItemsSource="{Binding}" Margin="10,0,10,10">
+                <ComboBox x:Name="cmbSource" Grid.Column="0" Grid.Row="1" SelectionChanged="cmbSource_SelectionChanged" ItemsSource="{Binding}" ToolTip="Hard drive you would like to copy from." Margin="10,0,10,10">
                     <ComboBox.ItemTemplate>
                         <DataTemplate>
                             <TextBlock>
-                        <Run Text="{Binding Path=Name,Mode=OneWay}" />
-                        <Run Text=" - " />
-                        <Run Text="{Binding Path=VolumeLabel,Mode=OneWay}" />
+                                <Run Text="{Binding Path=Name, Mode=OneWay}" />
+                                <Run Text=" - " />
+                                <Run Text="{Binding Path=VolumeLabel, Mode=OneWay}" />
                             </TextBlock>
                         </DataTemplate>
                     </ComboBox.ItemTemplate>
                 </ComboBox>
-                <ComboBox x:Name="cmbDestination" Grid.Column="1" Grid.Row="1" SelectionChanged="cmbDestination_SelectionChanged" ItemsSource="{Binding}"  Margin="0,0,10,10">
+                <ComboBox x:Name="cmbDestination" Grid.Column="1" Grid.Row="1" SelectionChanged="cmbDestination_SelectionChanged" ItemsSource="{Binding}" ToolTip="Hard drive you would like to copy to" Margin="0,0,10,10">
                     <ComboBox.ItemTemplate>
                         <DataTemplate>
                             <TextBlock>
-                        <Run Text="{Binding Path=Name,Mode=OneWay}" />
-                        <Run Text=" - " />
-                        <Run Text="{Binding Path=VolumeLabel,Mode=OneWay}" />
+                                <Run Text="{Binding Path=Name, Mode=OneWay}" />
+                                <Run Text=" - " />
+                                <Run Text="{Binding Path=VolumeLabel, Mode=OneWay}" />
                             </TextBlock>
                         </DataTemplate>
                     </ComboBox.ItemTemplate>
                 </ComboBox>
-                <TextBox x:Name="txtSource" Grid.Column="0" Grid.Row="2" IsReadOnly="True" Width="340" Height="200" TextWrapping="Wrap" Text="{Binding Path=SourceDriveInfo}" ScrollViewer.VerticalScrollBarVisibility="Visible" Margin="10,0,10,10" />
-                <TextBox x:Name="txtDestination" Grid.Column="1" Grid.Row="2" IsReadOnly="True" Width="340" Height="200" TextWrapping="Wrap" Text="{Binding Path=DestinationDriveInfo}" ScrollViewer.VerticalScrollBarVisibility="Visible" Margin="0,0,10,10" />
+                <TextBox x:Name="txtSource" Grid.Column="0" Grid.Row="2" IsReadOnly="True" Width="340" Height="200" TextWrapping="Wrap" Text="{Binding Path=SourceDriveInfo}" ScrollViewer.VerticalScrollBarVisibility="Visible" ToolTip="Information regarding the currently selected source drive" Margin="10,0,10,10" />
+                <TextBox x:Name="txtDestination" Grid.Column="1" Grid.Row="2" IsReadOnly="True" Width="340" Height="200" TextWrapping="Wrap" Text="{Binding Path=DestinationDriveInfo}" ScrollViewer.VerticalScrollBarVisibility="Visible" ToolTip="Information regarding the currently selected destination drive" Margin="0,0,10,10" />
                 <Button x:Name="btnBackup" Grid.Column="0" Grid.Row="3" Height="30" Width="120" Content="_Backup" Click="btnBackup_Click" HorizontalAlignment="Right" IsDefault="True" ToolTip="Backs up a hard drive." ToolTipService.ShowDuration="5000" Margin="0,0,10,10" />
                 <Button x:Name="btnRefresh" Grid.Column="1" Grid.Row="3" Height="30" Width="120" Content="_Refresh" Click="btnRefresh_Click" HorizontalAlignment="Left" ToolTip="Refreshes the list of connected drives." ToolTipService.ShowDuration="5000" Margin="0,0,0,10" />
                 <TextBlock x:Name="lblStatus" Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="2" TextAlignment="Center" Text="{Binding Path=Status}" />

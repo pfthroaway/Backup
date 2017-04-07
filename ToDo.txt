@@ -1,3 +1,0 @@
-Text Validation for Retry
-Fix Resizing on super-long entries for XF/XD/Custom
-Maybe make the Backup Tab not look so cramped on the sides

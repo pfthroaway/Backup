@@ -15,9 +15,7 @@ namespace Backup
     public partial class MainWindow : INotifyPropertyChanged
     {
         private readonly List<DriveInfo> _driveList = new List<DriveInfo>();
-        private readonly string _nl = Environment.NewLine;
-        private DriveInfo _selectedSourceDrive;
-        private DriveInfo _selectedDestinationDrive;
+        private DriveInfo _selectedSourceDrive, _selectedDestinationDrive;
         private string _destinationDriveInfo, _sourceDriveInfo, _status;
 
         #region Properties
@@ -70,16 +68,6 @@ namespace Backup
 
         #endregion Data-Binding
 
-        /// <summary>
-        /// Turns several Keyboard.Keys into a list of Keys which can be tested using List.Any.
-        /// </summary>
-        /// <param name="keys">Array of Keys</param>
-        /// <returns></returns>
-        private static IEnumerable<bool> GetListOfKeys(params Key[] keys)
-        {
-            return keys.Select(Keyboard.IsKeyDown).ToList();
-        }
-
         /// <summary>Load all drives connected to the computer which aren't a CD.</summary>
         private void LoadDrives()
         {
@@ -120,13 +108,13 @@ namespace Backup
         /// <returns>Information about the selected Drive</returns>
         private string SetDriveInformationText(DriveInfo selectedDrive)
         {
-            return "Drive Letter: " + selectedDrive.Name + _nl +
-                               "Drive Label: " + selectedDrive.VolumeLabel + _nl +
-                               "Drive Type: " + selectedDrive.DriveType + _nl +
-                               "Drive Format: " + selectedDrive.DriveFormat + _nl +
-                               "Total Capacity: " + $"{selectedDrive.TotalSize:0,0}" + _nl +
-                               "Total Free Space: " + $"{selectedDrive.TotalFreeSpace:0,0}" + _nl +
-                               "Available Free Space: " + $"{selectedDrive.AvailableFreeSpace:0,0}";
+            return "Drive Letter: " + selectedDrive.Name +
+                               "\nDrive Label: " + selectedDrive.VolumeLabel +
+                               "\nDrive Type: " + selectedDrive.DriveType +
+                               "\nDrive Format: " + selectedDrive.DriveFormat +
+                               "\nTotal Capacity: " + $"{selectedDrive.TotalSize:0,0}" +
+                               "\nTotal Free Space: " + $"{selectedDrive.TotalFreeSpace:0,0}" +
+                               "\nAvailable Free Space: " + $"{selectedDrive.AvailableFreeSpace:0,0}";
         }
 
         #region Backup Methods
@@ -150,13 +138,13 @@ namespace Backup
                 whatToCopy += whatToCopy.Length > 0 ? " /S" : "/S";
 
             string log = "";
-            if (chkLog.IsChecked.Value)
-                log = chkLogPlus.IsChecked.Value ? "/LOG+:" + txtLogLocation.Text : "/LOG:" + txtLogLocation.Text;
+            if (chkLog.IsChecked != null && chkLog.IsChecked.Value)
+                log = chkLogPlus.IsChecked != null && chkLogPlus.IsChecked.Value ? "/LOG+:" + txtLogLocation.Text : "/LOG:" + txtLogLocation.Text;
 
             string options = "";
-            if (chkRetryCount.IsChecked.Value)
+            if (chkRetryCount.IsChecked != null && chkRetryCount.IsChecked.Value)
                 options += "/R:" + txtRetryCount.Text;
-            if (chkRetryWait.IsChecked.Value)
+            if (chkRetryWait.IsChecked != null && chkRetryWait.IsChecked.Value)
                 options += " /W:" + txtRetryWait.Text;
 
             if (txtCustomCommand.Text.Length > 0)
@@ -165,7 +153,7 @@ namespace Backup
             options += " " + log;
 
             string exclude_dir = "";
-            if (chkExcludeDirectories.IsChecked.Value)
+            if (chkExcludeDirectories.IsChecked != null && chkExcludeDirectories.IsChecked.Value)
             {
                 exclude_dir += "/XD";
 
@@ -180,8 +168,9 @@ namespace Backup
                 if (txtXD5.Text.Length > 0)
                     exclude_dir += " \"" + source + txtXD5.Text + "\"";
             }
+
             string exclude_files = "";
-            if (chkExcludeFiles.IsChecked.Value)
+            if (chkExcludeFiles.IsChecked != null && chkExcludeFiles.IsChecked.Value)
             {
                 exclude_files += "/XF";
 
@@ -233,6 +222,7 @@ namespace Backup
         private void BackupComplete()
         {
             ToggleControls(true);
+            SourceDriveInfo = SetDriveInformationText(SelectedSourceDrive);
             DestinationDriveInfo = SetDriveInformationText(SelectedDestinationDrive);
             Status = "Backup Complete!";
         }
@@ -258,7 +248,8 @@ namespace Backup
                 else
                     new Notification("Source drive and destination drive must be different.", "Backup", NotificationButtons.OK, this).ShowDialog();
             }
-            else { new Notification("Please select both a source and destination drive and type a valid log location.", "Backup", NotificationButtons.OK, this).ShowDialog(); }
+            else
+                new Notification("Please select both a source and destination drive.", "Backup", NotificationButtons.OK, this).ShowDialog();
         }
 
         private void btnRefresh_Click(object sender, RoutedEventArgs e)
@@ -308,19 +299,12 @@ namespace Backup
 
         private void txtRetry_PreviewKeyDown(object sender, KeyEventArgs e)
         {
-            Key k = e.Key;
-
-            IEnumerable<bool> keys = GetListOfKeys(Key.Back, Key.Delete, Key.Home, Key.End, Key.LeftShift, Key.RightShift,
-            Key.Enter, Key.Tab, Key.LeftAlt, Key.RightAlt, Key.Left, Key.Right, Key.LeftCtrl, Key.RightCtrl,
-            Key.Escape);
-
-            e.Handled = !keys.Any(key => key) && (Key.D0 > k || k > Key.D9) && (Key.NumPad0 > k || k > Key.NumPad9);
+            Functions.PreviewKeyDown(e, KeyType.Integers);
         }
 
         private void textBox_GotFocus(object sender, RoutedEventArgs e)
         {
-            TextBox txtBox = (TextBox)sender;
-            txtBox.SelectAll();
+            Functions.TextBoxGotFocus(sender);
         }
 
         #endregion Window-Manipulation Methods
