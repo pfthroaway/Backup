@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Backup.Properties {
+namespace Extensions.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]

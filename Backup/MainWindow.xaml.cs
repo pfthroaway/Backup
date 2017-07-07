@@ -1,10 +1,10 @@
 ﻿using Extensions;
+using Extensions.Enums;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -85,22 +85,22 @@ namespace Backup
                 new Notification(ex.Message, "Backup", NotificationButtons.OK, this).ShowDialog();
             }
 
-            cmbSource.ItemsSource = _driveList;
-            cmbDestination.ItemsSource = _driveList;
-            cmbSource.Items.Refresh();
-            cmbDestination.Items.Refresh();
-            cmbSource.SelectedIndex = 0;
-            cmbDestination.SelectedIndex = 0;
+            CmbSource.ItemsSource = _driveList;
+            CmbDestination.ItemsSource = _driveList;
+            CmbSource.Items.Refresh();
+            CmbDestination.Items.Refresh();
+            CmbSource.SelectedIndex = 0;
+            CmbDestination.SelectedIndex = 0;
         }
 
         /// <summary>Toggles several controls' IsEnabled Property.</summary>
         /// <param name="toggle">Determines the IsEnabled Property of the controls</param>
         private void ToggleControls(bool toggle)
         {
-            btnBackup.IsEnabled = toggle;
-            btnRefresh.IsEnabled = toggle;
-            cmbSource.IsEnabled = toggle;
-            cmbDestination.IsEnabled = toggle;
+            BtnBackup.IsEnabled = toggle;
+            BtnRefresh.IsEnabled = toggle;
+            CmbSource.IsEnabled = toggle;
+            CmbDestination.IsEnabled = toggle;
         }
 
         /// <summary>Sets the text for the TextBox of a selected drive.</summary>
@@ -122,74 +122,74 @@ namespace Backup
         /// <summary>Backup one hard drive to another.</summary>
         private async void Backup()
         {
-            DriveInfo sourceDrive = _driveList[cmbSource.SelectedIndex];
-            DriveInfo destDrive = _driveList[cmbDestination.SelectedIndex];
+            DriveInfo sourceDrive = _driveList[CmbSource.SelectedIndex];
+            DriveInfo destDrive = _driveList[CmbDestination.SelectedIndex];
 
             string source = sourceDrive.Name;
             string dest = destDrive.Name;
             string whatToCopy = "";
-            if (chkMirror.IsChecked != null && chkMirror.IsChecked.Value)
+            if (ChkMirror.IsChecked != null && ChkMirror.IsChecked.Value)
                 whatToCopy += "/MIR";
-            if (chkPurge.IsChecked != null && chkPurge.IsChecked.Value)
+            if (ChkPurge.IsChecked != null && ChkPurge.IsChecked.Value)
                 whatToCopy += whatToCopy.Length > 0 ? " /PURGE" : "/PURGE";
-            if (chkCopyE.IsChecked != null && chkCopyE.IsChecked.Value)
+            if (ChkCopyE.IsChecked != null && ChkCopyE.IsChecked.Value)
                 whatToCopy += whatToCopy.Length > 0 ? " /E" : "/E";
-            if (chkCopyS.IsChecked != null && chkCopyS.IsChecked.Value)
+            if (ChkCopyS.IsChecked != null && ChkCopyS.IsChecked.Value)
                 whatToCopy += whatToCopy.Length > 0 ? " /S" : "/S";
 
             string log = "";
-            if (chkLog.IsChecked != null && chkLog.IsChecked.Value)
-                log = chkLogPlus.IsChecked != null && chkLogPlus.IsChecked.Value ? "/LOG+:" + txtLogLocation.Text : "/LOG:" + txtLogLocation.Text;
+            if (ChkLog.IsChecked != null && ChkLog.IsChecked.Value)
+                log = ChkLogPlus.IsChecked != null && ChkLogPlus.IsChecked.Value ? "/LOG+:" + TxtLogLocation.Text : "/LOG:" + TxtLogLocation.Text;
 
             string options = "";
-            if (chkRetryCount.IsChecked != null && chkRetryCount.IsChecked.Value)
-                options += "/R:" + txtRetryCount.Text;
-            if (chkRetryWait.IsChecked != null && chkRetryWait.IsChecked.Value)
-                options += " /W:" + txtRetryWait.Text;
+            if (ChkRetryCount.IsChecked != null && ChkRetryCount.IsChecked.Value)
+                options += "/R:" + TxtRetryCount.Text;
+            if (ChkRetryWait.IsChecked != null && ChkRetryWait.IsChecked.Value)
+                options += " /W:" + TxtRetryWait.Text;
 
-            if (txtCustomCommand.Text.Length > 0)
-                options += " " + txtCustomCommand.Text;
+            if (TxtCustomCommand.Text.Length > 0)
+                options += " " + TxtCustomCommand.Text;
 
             options += " " + log;
 
             string exclude_dir = "";
-            if (chkExcludeDirectories.IsChecked != null && chkExcludeDirectories.IsChecked.Value)
+            if (ChkExcludeDirectories.IsChecked != null && ChkExcludeDirectories.IsChecked.Value)
             {
                 exclude_dir += "/XD";
 
-                if (txtXD1.Text.Length > 0)
-                    exclude_dir += " \"" + source + txtXD1.Text + "\"";
-                if (txtXD2.Text.Length > 0)
-                    exclude_dir += " \"" + source + txtXD2.Text + "\"";
-                if (txtXD3.Text.Length > 0)
-                    exclude_dir += " \"" + source + txtXD3.Text + "\"";
-                if (txtXD4.Text.Length > 0)
-                    exclude_dir += " \"" + source + txtXD4.Text + "\"";
-                if (txtXD5.Text.Length > 0)
-                    exclude_dir += " \"" + source + txtXD5.Text + "\"";
+                if (TxtXd1.Text.Length > 0)
+                    exclude_dir += " \"" + source + TxtXd1.Text + "\"";
+                if (TxtXd2.Text.Length > 0)
+                    exclude_dir += " \"" + source + TxtXd2.Text + "\"";
+                if (TxtXd3.Text.Length > 0)
+                    exclude_dir += " \"" + source + TxtXd3.Text + "\"";
+                if (TxtXd4.Text.Length > 0)
+                    exclude_dir += " \"" + source + TxtXd4.Text + "\"";
+                if (TxtXd5.Text.Length > 0)
+                    exclude_dir += " \"" + source + TxtXd5.Text + "\"";
             }
 
             string exclude_files = "";
-            if (chkExcludeFiles.IsChecked != null && chkExcludeFiles.IsChecked.Value)
+            if (ChkExcludeFiles.IsChecked != null && ChkExcludeFiles.IsChecked.Value)
             {
                 exclude_files += "/XF";
 
-                if (txtXF1.Text.Length > 0)
-                    exclude_files += " \"" + source + txtXF1.Text + "\"";
-                if (txtXF2.Text.Length > 0)
-                    exclude_files += " \"" + source + txtXF2.Text + "\"";
-                if (txtXF3.Text.Length > 0)
-                    exclude_files += " \"" + source + txtXF3.Text + "\"";
-                if (txtXF4.Text.Length > 0)
-                    exclude_files += " \"" + source + txtXF4.Text + "\"";
-                if (txtXF5.Text.Length > 0)
-                    exclude_files += " \"" + source + txtXF5.Text + "\"";
+                if (TxtXf1.Text.Length > 0)
+                    exclude_files += " \"" + source + TxtXf1.Text + "\"";
+                if (TxtXf2.Text.Length > 0)
+                    exclude_files += " \"" + source + TxtXf2.Text + "\"";
+                if (TxtXf3.Text.Length > 0)
+                    exclude_files += " \"" + source + TxtXf3.Text + "\"";
+                if (TxtXf4.Text.Length > 0)
+                    exclude_files += " \"" + source + TxtXf4.Text + "\"";
+                if (TxtXf5.Text.Length > 0)
+                    exclude_files += " \"" + source + TxtXf5.Text + "\"";
             }
 
             string robo = source + " " + dest + " " + whatToCopy + " " + options + " " + exclude_dir + " " + exclude_files;
 
-            if (!Directory.Exists(txtLogLocation.Text.Substring(0, txtLogLocation.Text.LastIndexOf("\\") + 1)))
-                Directory.CreateDirectory(txtLogLocation.Text.Substring(0, txtLogLocation.Text.LastIndexOf("\\") + 1));
+            if (!Directory.Exists(TxtLogLocation.Text.Substring(0, TxtLogLocation.Text.LastIndexOf("\\") + 1)))
+                Directory.CreateDirectory(TxtLogLocation.Text.Substring(0, TxtLogLocation.Text.LastIndexOf("\\") + 1));
 
             try
             {
@@ -233,10 +233,10 @@ namespace Backup
 
         private void btnBackup_Click(object sender, RoutedEventArgs e)
         {
-            DriveInfo sourceDrive = _driveList[cmbSource.SelectedIndex];
-            DriveInfo destDrive = _driveList[cmbDestination.SelectedIndex];
+            DriveInfo sourceDrive = _driveList[CmbSource.SelectedIndex];
+            DriveInfo destDrive = _driveList[CmbDestination.SelectedIndex];
 
-            if (cmbDestination.SelectedIndex >= 0 && cmbSource.SelectedIndex >= 0)
+            if (CmbDestination.SelectedIndex >= 0 && CmbSource.SelectedIndex >= 0)
             {
                 if (sourceDrive != destDrive)
                 {
@@ -271,11 +271,11 @@ namespace Backup
 
         private void cmbSource_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (cmbSource.SelectedIndex >= 0)
+            if (CmbSource.SelectedIndex >= 0)
             {
-                SelectedSourceDrive = (DriveInfo)cmbSource.SelectedValue;
+                SelectedSourceDrive = (DriveInfo)CmbSource.SelectedValue;
                 SourceDriveInfo = SetDriveInformationText(SelectedSourceDrive);
-                btnBackup.IsEnabled = cmbDestination.SelectedIndex >= 0;
+                BtnBackup.IsEnabled = CmbDestination.SelectedIndex >= 0;
             }
             else
                 SourceDriveInfo = "";
@@ -285,11 +285,11 @@ namespace Backup
 
         private void cmbDestination_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (cmbDestination.SelectedIndex >= 0)
+            if (CmbDestination.SelectedIndex >= 0)
             {
-                SelectedDestinationDrive = (DriveInfo)cmbDestination.SelectedValue;
+                SelectedDestinationDrive = (DriveInfo)CmbDestination.SelectedValue;
                 DestinationDriveInfo = SetDriveInformationText(SelectedDestinationDrive);
-                btnBackup.IsEnabled = cmbSource.SelectedIndex >= 0;
+                BtnBackup.IsEnabled = CmbSource.SelectedIndex >= 0;
             }
             else
                 DestinationDriveInfo = "";
