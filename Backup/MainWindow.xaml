@@ -5,21 +5,14 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
         Style="{StaticResource WindowStyle}"
-        Loaded="MainWindow_OnLoaded"
-        Title="Backup"
+        Title="{Binding Path=Content.Title, ElementName=MainFrame}"
         WindowState="Maximized"
         ResizeMode="CanResize"
         SizeToContent="Manual"
         WindowStartupLocation="CenterScreen">
-    <Grid Margin="10">
-        <Frame x:Name="MainFrame" NavigationUIVisibility="Hidden" Source="BackupPage.xaml" SizeChanged="MainFrame_OnSizeChanged">
-            <Frame.LayoutTransform>
-                <ScaleTransform x:Name="ApplicationScaleTransform"
-                                CenterX="0"
-                                CenterY="0"
-                                ScaleX="{Binding ElementName=WindowMain, Path=ScaleValue}"
-                                ScaleY="{Binding ElementName=WindowMain, Path=ScaleValue}" />
-            </Frame.LayoutTransform>
-        </Frame>
-    </Grid>
+    <Viewbox Stretch="Uniform">
+        <Grid Margin="10">
+            <Frame x:Name="MainFrame" NavigationUIVisibility="Hidden" Source="BackupPage.xaml" />
+        </Grid>
+    </Viewbox>
 </Window>
