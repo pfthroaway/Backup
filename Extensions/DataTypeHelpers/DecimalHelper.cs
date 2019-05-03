@@ -6,9 +6,9 @@ namespace Extensions.DataTypeHelpers
     public static class DecimalHelper
     {
         /// <summary>Utilizes decimal.TryParse to easily parse a Decimal.</summary>
-        /// <param name="obj">Object to be parsed</param>
+        /// <param name="value">Object to be parsed</param>
         /// <returns>Parsed Decimal</returns>
-        public static decimal Parse(object obj) => Parse(obj.ToString());
+        public static decimal Parse(object value) => Parse(value.ToString());
 
         /// <summary>Utilizes decimal.TryParse to easily parse a Decimal.</summary>
         /// <param name="text">Text to be parsed</param>

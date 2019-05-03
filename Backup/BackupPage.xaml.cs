@@ -95,7 +95,7 @@ namespace Backup
             }
             catch (Exception ex)
             {
-                new Notification(ex.Message, "Backup", NotificationButtons.OK, Window).ShowDialog();
+                new Notification(ex.Message, "Backup", NotificationButton.OK, Window).ShowDialog();
             }
 
             CmbSource.ItemsSource = _driveList;
@@ -119,16 +119,13 @@ namespace Backup
         /// <summary>Sets the text for the TextBox of a selected drive.</summary>
         /// <param name="selectedDrive">Drive the user selected</param>
         /// <returns>Information about the selected Drive</returns>
-        private string SetDriveInformationText(DriveInfo selectedDrive)
-        {
-            return "Drive Letter: " + selectedDrive.Name +
+        private static string SetDriveInformationText(DriveInfo selectedDrive) => "Drive Letter: " + selectedDrive.Name +
                    "\nDrive Label: " + selectedDrive.VolumeLabel +
                    "\nDrive Type: " + selectedDrive.DriveType +
                    "\nDrive Format: " + selectedDrive.DriveFormat +
                    "\nTotal Capacity: " + $"{selectedDrive.TotalSize:0,0}" +
                    "\nTotal Free Space: " + $"{selectedDrive.TotalFreeSpace:0,0}" +
                    "\nAvailable Free Space: " + $"{selectedDrive.AvailableFreeSpace:0,0}";
-        }
 
         #region Backup Methods
 
@@ -227,7 +224,7 @@ namespace Backup
             }
             catch (Exception ex)
             {
-                new Notification(ex.Message, "Backup", NotificationButtons.OK, Window).ShowDialog();
+                new Notification(ex.Message, "Backup", NotificationButton.OK, Window).ShowDialog();
             }
         }
 
@@ -256,13 +253,13 @@ namespace Backup
                     if (sourceDrive.TotalSize - sourceDrive.TotalFreeSpace <= destDrive.TotalSize)
                         Backup();
                     else
-                        new Notification("Destination drive is too small to backup this drive. Please select another.", "Backup", NotificationButtons.OK, Window).ShowDialog();
+                        new Notification("Destination drive is too small to backup this drive. Please select another.", "Backup", NotificationButton.OK, Window).ShowDialog();
                 }
                 else
-                    new Notification("Source drive and destination drive must be different.", "Backup", NotificationButtons.OK, Window).ShowDialog();
+                    new Notification("Source drive and destination drive must be different.", "Backup", NotificationButton.OK, Window).ShowDialog();
             }
             else
-                new Notification("Please select both a source and destination drive.", "Backup", NotificationButtons.OK, Window).ShowDialog();
+                new Notification("Please select both a source and destination drive.", "Backup", NotificationButton.OK, Window).ShowDialog();
         }
 
         private void btnRefresh_Click(object sender, RoutedEventArgs e)

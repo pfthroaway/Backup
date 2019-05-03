@@ -6,9 +6,9 @@ namespace ExtensionsCore.DataTypeHelpers
     public static class LongHelper
     {
         /// <summary>Utilizes long.TryParse to easily parse an Integer.</summary>
-        /// <param name="obj">Object to be parsed</param>
+        /// <param name="value">Object to be parsed</param>
         /// <returns>Parsed integer</returns>
-        public static long Parse(object obj) => Parse(obj.ToString());
+        public static long Parse(object value) => Parse(value.ToString());
 
         /// <summary>Utilizes long.TryParse to easily parse an Integer.</summary>
         /// <param name="text">Text to be parsed</param>
