@@ -7,10 +7,10 @@
       mc:Ignorable="d"
       Style="{StaticResource PageStyle}"
       Title="Backup">
-    <Grid x:Name="Grid" Margin="0">
+    <Grid x:Name="Grid" HorizontalAlignment="Center" VerticalAlignment="Center">
         <TabControl>
             <TabItem Header="Backup" Padding="10,5">
-                <Grid Margin="10" Width="726" Height="501">
+                <Grid Margin="10" Width="928" Height="661">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="Auto" />
@@ -24,7 +24,7 @@
                     </Grid.RowDefinitions>
                     <TextBlock Grid.Column="0" Grid.Row="0" Text="Source Drive:" TextAlignment="Center" Margin="0,0,10,5" />
                     <TextBlock Grid.Column="1" Grid.Row="0" Text="Destination Drive:" TextAlignment="Center" Margin="0,0,0,5" />
-                    <ComboBox x:Name="CmbSource" Grid.Column="0" Grid.Row="1" Width="340" SelectionChanged="cmbSource_SelectionChanged" ItemsSource="{Binding}" ToolTip="Hard drive you would like to copy from." Margin="0,0,20,20">
+                    <ComboBox x:Name="CmbSource" Grid.Column="0" Grid.Row="1" Width="450" SelectionChanged="cmbSource_SelectionChanged" ItemsSource="{Binding}" ToolTip="Hard drive you would like to copy from." Margin="0,0,20,20">
                         <ComboBox.ItemTemplate>
                             <DataTemplate>
                                 <TextBlock>
@@ -35,7 +35,7 @@
                             </DataTemplate>
                         </ComboBox.ItemTemplate>
                     </ComboBox>
-                    <ComboBox x:Name="CmbDestination" Grid.Column="1" Grid.Row="1" Width="340" SelectionChanged="cmbDestination_SelectionChanged" ItemsSource="{Binding}" ToolTip="Hard drive you would like to copy to" Margin="0,0,0,20">
+                    <ComboBox x:Name="CmbDestination" Grid.Column="1" Grid.Row="1" Width="450" SelectionChanged="cmbDestination_SelectionChanged" ItemsSource="{Binding}" ToolTip="Hard drive you would like to copy to" Margin="0,0,0,20">
                         <ComboBox.ItemTemplate>
                             <DataTemplate>
                                 <TextBlock>
@@ -46,15 +46,15 @@
                             </DataTemplate>
                         </ComboBox.ItemTemplate>
                     </ComboBox>
-                    <TextBox x:Name="TxtSource" Grid.Column="0" Grid.Row="2" IsReadOnly="True" Width="340" Height="200" TextWrapping="Wrap" Text="{Binding Path=SourceDriveInfo}" ScrollViewer.VerticalScrollBarVisibility="Visible" ToolTip="Information regarding the currently selected source drive" Margin="0,0,20,20" />
-                    <TextBox x:Name="TxtDestination" Grid.Column="1" Grid.Row="2" IsReadOnly="True" Width="340" Height="200" TextWrapping="Wrap" Text="{Binding Path=DestinationDriveInfo}" ScrollViewer.VerticalScrollBarVisibility="Visible" ToolTip="Information regarding the currently selected destination drive" Margin="0,0,0,20" />
-                    <Button x:Name="BtnBackup" Grid.Column="0" Grid.Row="3" Width="120" Content="_Backup" Click="btnBackup_Click" HorizontalAlignment="Right" IsDefault="True" ToolTip="Backs up a hard drive." ToolTipService.ShowDuration="5000" Margin="0,0,20,10" />
-                    <Button x:Name="BtnRefresh" Grid.Column="1" Grid.Row="3" Width="120" Content="_Refresh" Click="btnRefresh_Click" HorizontalAlignment="Left" ToolTip="Refreshes the list of connected drives." ToolTipService.ShowDuration="5000" Margin="0,0,0,10" />
+                    <TextBox x:Name="TxtSource" Grid.Column="0" Grid.Row="2" IsReadOnly="True" Width="450" Height="350" TextWrapping="Wrap" Text="{Binding Path=SourceDriveInfo}" ScrollViewer.VerticalScrollBarVisibility="Visible" ToolTip="Information regarding the currently selected source drive" Margin="0,0,20,20" />
+                    <TextBox x:Name="TxtDestination" Grid.Column="1" Grid.Row="2" IsReadOnly="True" Width="450" Height="350" TextWrapping="Wrap" Text="{Binding Path=DestinationDriveInfo}" ScrollViewer.VerticalScrollBarVisibility="Visible" ToolTip="Information regarding the currently selected destination drive" Margin="0,0,0,20" />
+                    <Button x:Name="BtnBackup" Grid.Column="0" Grid.Row="3" Width="200" Content="_Backup" Click="btnBackup_Click" HorizontalAlignment="Right" IsDefault="True" ToolTip="Backs up a hard drive." ToolTipService.ShowDuration="5000" Margin="0,0,20,10" />
+                    <Button x:Name="BtnRefresh" Grid.Column="1" Grid.Row="3" Width="200" Content="_Refresh" Click="btnRefresh_Click" HorizontalAlignment="Left" ToolTip="Refreshes the list of connected drives." ToolTipService.ShowDuration="5000" Margin="0,0,0,10" />
                     <TextBlock x:Name="LblStatus" Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="2" TextAlignment="Center" Text="{Binding Path=Status}" />
                 </Grid>
             </TabItem>
             <TabItem Header="Advanced" Padding="10,5">
-                <Grid Margin="10" Width="726" Height="501">
+                <Grid Margin="10" Width="928" Height="661">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="Auto" />
@@ -103,31 +103,31 @@
                                 <CheckBox x:Name="ChkLog" Content="/LOG" IsChecked="True" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" ToolTip="Log the status of the copy operation." ToolTipService.ShowDuration="5000" Margin="0,0,10,0" />
                                 <CheckBox x:Name="ChkLogPlus" Content="+" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" ToolTip="Append log to end of file." ToolTipService.ShowDuration="5000" />
                             </StackPanel>
-                            <TextBox x:Name="TxtLogLocation" Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" Width="300" Text="C:\copylog\log.txt" TextAlignment="Center" GotFocus="textBox_GotFocus" Margin="0,3,0,0" />
+                            <TextBox x:Name="TxtLogLocation" Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" Width="400" Text="C:\copylog\log.txt" TextAlignment="Center" GotFocus="textBox_GotFocus" Margin="0,3,0,0" />
                         </StackPanel>
                     </GroupBox>
                     <GroupBox Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" Header="Exclude Files" Margin="0,0,10,10">
                         <StackPanel>
                             <CheckBox x:Name="ChkExcludeFiles" Content="/XF" IsChecked="True" HorizontalAlignment="Center" VerticalContentAlignment="Center" ToolTip="Exclude specified files from being copied." ToolTipService.ShowDuration="5000" Margin="0,0,10,10" />
-                            <TextBox x:Name="TxtXf1" Width="283" Text="Icon.ico" TextAlignment="Center" GotFocus="textBox_GotFocus" Margin="0,0,0,5" />
-                            <TextBox x:Name="TxtXf2" Width="283" TextAlignment="Center" GotFocus="textBox_GotFocus" Margin="0,0,0,5" />
-                            <TextBox x:Name="TxtXf3" Width="283" TextAlignment="Center" GotFocus="textBox_GotFocus" Margin="0,0,0,5" />
-                            <TextBox x:Name="TxtXf4" Width="283" TextAlignment="Center" GotFocus="textBox_GotFocus" Margin="0,0,0,5" />
-                            <TextBox x:Name="TxtXf5" Width="283" TextAlignment="Center" GotFocus="textBox_GotFocus" Margin="0,0,0,10" />
+                            <TextBox x:Name="TxtXf1" Width="400" Text="Icon.ico" TextAlignment="Center" GotFocus="textBox_GotFocus" Margin="0,0,0,5" />
+                            <TextBox x:Name="TxtXf2" Width="400" TextAlignment="Center" GotFocus="textBox_GotFocus" Margin="0,0,0,5" />
+                            <TextBox x:Name="TxtXf3" Width="400" TextAlignment="Center" GotFocus="textBox_GotFocus" Margin="0,0,0,5" />
+                            <TextBox x:Name="TxtXf4" Width="400" TextAlignment="Center" GotFocus="textBox_GotFocus" Margin="0,0,0,5" />
+                            <TextBox x:Name="TxtXf5" Width="400" TextAlignment="Center" GotFocus="textBox_GotFocus" Margin="0,0,0,10" />
                         </StackPanel>
                     </GroupBox>
                     <GroupBox Grid.Column="2" Grid.Row="1" Header="Exclude Directories" Margin="0,0,0,10">
                         <StackPanel>
                             <CheckBox x:Name="ChkExcludeDirectories" Content="/XD" IsChecked="True" HorizontalAlignment="Center" VerticalContentAlignment="Center" ToolTip="Exclude specified directories from being copied." ToolTipService.ShowDuration="5000" Margin="0,0,10,10" />
-                            <TextBox x:Name="TxtXd1" Width="300" Text="System Volume Information" TextAlignment="Center" GotFocus="textBox_GotFocus" Margin="0,0,0,5" />
-                            <TextBox x:Name="TxtXd2" Width="300" Text="$RECYCLE.BIN" TextAlignment="Center" GotFocus="textBox_GotFocus" Margin="0,0,0,5" />
-                            <TextBox x:Name="TxtXd3" Width="300" Text="Boot" TextAlignment="Center" GotFocus="textBox_GotFocus" Margin="0,0,0,5" />
-                            <TextBox x:Name="TxtXd4" Width="300" TextAlignment="Center" GotFocus="textBox_GotFocus" Margin="0,0,0,5" />
-                            <TextBox x:Name="TxtXd5" Width="300" TextAlignment="Center" GotFocus="textBox_GotFocus" Margin="0,0,0,10" />
+                            <TextBox x:Name="TxtXd1" Width="400" Text="System Volume Information" TextAlignment="Center" GotFocus="textBox_GotFocus" Margin="0,0,0,5" />
+                            <TextBox x:Name="TxtXd2" Width="400" Text="$RECYCLE.BIN" TextAlignment="Center" GotFocus="textBox_GotFocus" Margin="0,0,0,5" />
+                            <TextBox x:Name="TxtXd3" Width="400" Text="Boot" TextAlignment="Center" GotFocus="textBox_GotFocus" Margin="0,0,0,5" />
+                            <TextBox x:Name="TxtXd4" Width="400" TextAlignment="Center" GotFocus="textBox_GotFocus" Margin="0,0,0,5" />
+                            <TextBox x:Name="TxtXd5" Width="400" TextAlignment="Center" GotFocus="textBox_GotFocus" Margin="0,0,0,10" />
                         </StackPanel>
                     </GroupBox>
                     <GroupBox Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="3" Header="Custom Command" Margin="0,0,0,0">
-                        <TextBox x:Name="TxtCustomCommand" TextAlignment="Center" GotFocus="textBox_GotFocus" Width="606" Margin="10" />
+                        <TextBox x:Name="TxtCustomCommand" TextAlignment="Center" GotFocus="textBox_GotFocus" Width="900" Margin="10" />
                     </GroupBox>
                 </Grid>
             </TabItem>

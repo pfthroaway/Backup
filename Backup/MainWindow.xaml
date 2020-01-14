@@ -6,13 +6,18 @@
         mc:Ignorable="d"
         Style="{StaticResource WindowStyle}"
         Title="{Binding Path=Content.Title, ElementName=MainFrame}"
+        MinWidth="1032"
+        MinHeight="600"
         WindowState="Maximized"
         ResizeMode="CanResize"
         SizeToContent="Manual"
         WindowStartupLocation="CenterScreen">
     <Viewbox Stretch="Uniform">
-        <Grid Margin="10">
-            <Frame x:Name="MainFrame" NavigationUIVisibility="Hidden" Source="BackupPage.xaml" />
-        </Grid>
+        <Frame x:Name="MainFrame"
+            ScrollViewer.VerticalScrollBarVisibility="Auto"
+            ScrollViewer.HorizontalScrollBarVisibility="Auto"
+            ScrollViewer.CanContentScroll="True"
+            NavigationUIVisibility="Hidden"
+            Source="BackupPage.xaml" />
     </Viewbox>
 </Window>
